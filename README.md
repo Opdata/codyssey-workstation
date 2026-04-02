@@ -1,5 +1,3 @@
-# Docker & Linux 기초 미션
-
 ## 1. 프로젝트 개요
 
 누구나 동일한 방식으로 실행/배포/디버그할 수 있는 환경을 구성하기 위해 워크스테이션을 구축한다.</br>
@@ -14,20 +12,97 @@
 
 | 항목     | 버전 / 값            |
 | -------- | -------------------- |
-| OS       | Sequoia 15.7.4       |
+| OS       | macOS 26.3           |
 | Shell    | zsh                  |
 | Terminal | 기본 터미널          |
-| Docker   | 28.5.2 build ecc6942 |
-| Git      | 2.53.0               |
+| Docker   | 9.3.1, build c2be9cc |
+| Git      | 2.33.0               |
 
 ---
 
 ## 3. 터미널 조작 로그
 
 ```zsh
-# pwd, ls -la, mkdir, cp, mv, rm, cat, touch 등
-# 추후 기입
+# pwd, ls -al, mkdir, cp, mv, rm, cat, touch 등
+$ pwd # 현재 작업 중인 디렉토리의 절대 경로를 출력
+/Users/jun/Documents/GitHub/codyssey-work/workstation
+
+$ ls -al # 목록 확인(숨김 파일, 디렉토리 포함)
+total 16
+drwxr-xr-x  4 jun  staff   128  4 26 10:38 .
+drwxr-xr-x  3 jun  staff    96  4 26 10:37 ..
+drwxr-xr-x  3 jun  staff    96  4 26 10:38 .git
+-rw-r--r--  1 jun  staff  1354  4 26 10:38 .gitignore
+-rw-r--r--  1 jun  staff  4096  4 26 10:38 README.md
+
+$ mkdir test # test 디렉토리 생성
+$ ls -al
+total 16
+drwxr-xr-x  4 jun  staff   128  4 26 10:38 .
+drwxr-xr-x  3 jun  staff    96  4 26 10:37 ..
+drwxr-xr-x  3 jun  staff    96  4 26 10:38 .git
+-rw-r--r--  1 jun  staff  1354  4 26 10:38 .gitignore
+-rw-r--r--  1 jun  staff  4096  4 26 10:38 README.md
+-rw-r--r--  1 jun  staff     0  4 26 10:38 test
+
+$ cp test test2 # test 디렉토리를 test2로 복사
+$ ls -al
+total 16
+drwxr-xr-x  4 jun  staff   128  4 26 10:38 .
+drwxr-xr-x  3 jun  staff    96  4 26 10:37 ..
+drwxr-xr-x  3 jun  staff    96  4 26 10:38 .git
+-rw-r--r--  1 jun  staff  1354  4 26 10:38 .gitignore
+-rw-r--r--  1 jun  staff     0  4 26 10:38 README.md
+-rw-r--r--  1 jun  staff     0  4 26 10:38 test
+-rw-r--r--  1 jun  staff     0  4 26 10:38 test2
+
+$ mv test test3 # test 디렉토리의 이름을 test3로 변경
+$ ls -al
+total 16
+drwxr-xr-x  4 jun  staff   128  4 26 10:38 .
+drwxr-xr-x  3 jun  staff    96  4 26 10:37 ..
+drwxr-xr-x  3 jun  staff    96  4 26 10:38 .git
+-rw-r--r--  1 jun  staff  1354  4 26 10:38 .gitignore
+-rw-r--r--  1 jun  staff     0  4 26 10:38 README.md
+-rw-r--r--  1 jun  staff     0  4 26 10:38 test2
+-rw-r--r--  1 jun  staff     0  4 26 10:38 test3
+
+$ mv test2 mvtestDir # test2 디렉토리를 mvtestDir로 이동
+$ ls -al mvtestDir
+drwxr-xr-x  3 jun  staff   96  4월  2 13:39 .
+drwxrw-r--@ 9 jun  staff  288  4월  2 13:39 ..
+drwxr-xr-x  2 jun  staff   64  4월  2 13:38 test2
+
+$ rm -r mvtestDir # mvtestDir 디렉토리 삭제
+$ ls -al
+drwxrw-r--@  8 jun  staff    256  4월  2 13:41 .
+drwxr-xr-x   3 jun  staff     96  4월  1 20:18 ..
+drwxr-xr-x@ 15 jun  staff    480  4월  1 21:25 .git
+-rw-r--r--@  1 jun  staff     28  4월  1 20:18 .gitignore
+-rw-r--r--@  1 jun  staff   8893  4월  2 13:40 README.md
+
+$ cat README.md # README.md 파일 내용 출력
+## 1. 프로젝트 개요
+...
+....
+
+$ touch test.txt # test.txt 빈 파일 생성
+$ ls -al
+-rw-r--r--   1 jun  staff      0  4월  2 13:45 test.txt
 ```
+
+### 터미널 조작 커맨드 설명
+
+| 커맨드   | 설명                                                          | 예시1           | 예시2                |
+| -------- | ------------------------------------------------------------- | --------------- | -------------------- |
+| `pwd`    | 현재 작업 중인 디렉토리의 절대 경로를 출력                    | `pwd`           |                      |
+| `ls -la` | 현재 디렉토리 목록 출력 (-l: 자세한 정보, -a: 숨김 파일 포함) | `ls -la`        | `ls -la /tmp`        |
+| `mkdir`  | 새로운 디렉토리를 생성                                        | `mkdir test`    | `mkdir -p a/b/c`     |
+| `cp`     | 파일 또는 디렉토리를 복사                                     | `cp test test2` | `cp test /tmp/test2` |
+| `mv`     | 파일 또는 디렉토리를 이동하거나 이름을 변경                   | `mv test test3` | `mv test /tmp/test3` |
+| `rm`     | 파일 또는 디렉토리를 삭제                                     | `rm test2`      | `rm -r testdir`      |
+| `cat`    | 파일의 내용을 출력                                            | `cat README.md` | `cat /etc/hosts`     |
+| `touch`  | 빈 파일을 생성하거나 파일의 타임스탬프를 업데이트             | `touch test`    | `touch a.txt b.txt`  |
 
 ---
 
@@ -35,13 +110,16 @@
 
 ```zsh
 # 변경 전
-# 추후 기입
+drwxr-xr-x@  8 jun  staff   256  4월  1 21:43 workstation
 
-# chmod 실행
-# 추후 기입
+# workstation 디렉토리 권한을 744로 변경
+$ chmod 744 workstation
+drwxr--r--@  8 jun  staff   256  4월  1 21:43 workstation
 
-# 변경 후
-# 추후 기입
+# workstation 디렉토리 그룹 쓰기 권한 변경
+$ chmod g+w workstation
+$ ls -al
+drwxrw-r--@  8 jun  staff   256  4월  1 21:43 workstation
 ```
 
 ---
@@ -49,7 +127,36 @@
 ## 5. Docker 설치 및 기본 점검
 
 ```zsh
-# 추후 기입
+# Apple Silicon
+curl -o Docker.dmg "https://desktop.docker.com/mac/main/arm64/Docker.dmg"
+
+# Intel
+curl -o Docker.dmg "https://desktop.docker.com/mac/main/amd64/Docker.dmg"
+
+# 마운트 & 카피
+hdiutil attach Docker.dmg
+cp -R /Volumes/Docker/Docker.app /Applications
+hdiutil detach /Volumes/Docker
+
+# Docker 버전 확인
+$ docker --version
+Docker version 29.3.1, build c2be9cc
+
+# Docker 전체 시스템 정보(커널 버전, 컨테이너 수 등등)
+$ docker info
+Client:
+ Version:    29.3.1
+ Context:    desktop-linux
+ Debug Mode: false
+ Plugins:
+  agent: Docker AI Agent Runner (Docker Inc.)
+    Version:  v1.34.0
+    Path:     /Users/jun/.docker/cli-plugins/docker-agent
+  ai: Docker AI Agent - Ask Gordon (Docker Inc.)
+    Version:  v1.20.1
+    Path:     /Users/jun/.docker/cli-plugins/docker-ai
+  buildx: Docker Buildx (Docker Inc.)
+  ....
 ```
 
 ---
