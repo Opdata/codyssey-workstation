@@ -265,9 +265,31 @@ hi
 ```zsh
 # Dockerfile 빌드(현재 디렉토리에 Dockerfile이 있다고 가정)
 $ docker build -t custom-nginx .
+[+] Building 0.2s (7/7) FINISHED docker:desktop-linux
+ => [internal] load build definition from Dockerfile  0.0s
+ => => transferring dockerfile: 176B 0.0s
+ => [internal] load metadata for docker.io/library/nginx:alpine 0.0s
+ => [internal] load .dockerignore 0.0s
+ => => transferring context: 2B 0.0s
+ => [internal] load build context 0.0s
+ => => transferring context: 65B 0.0s
+ => [1/2] FROM docker.io/library/nginx:alpine@sha256:e7257f1ef28ba17cf7c248cb8ccf6f0c6e0228ab9c315c152f9c203cd34cf6d1 0.0s
+ => => resolve docker.io/library/nginx:alpine@sha256:e7257f1ef28ba17cf7c248cb8ccf6f0c6e0228ab9c315c152f9c203cd34cf6d1 0.0s
+ => CACHED [2/2] COPY static/ /usr/share/nginx/html 0.0s
+ => exporting to image 0.0s
+ => => exporting layers 0.0s
+ => => exporting manifest sha256:a8a1389550087fb3bed48142142107043d90ac0566985f42602f8e60b5a15af7 0.0s
+ => => exporting config sha256:7f5a9c1c17707f9b2847b4e42874cc23cf0718bae9762b2077f95bca7e5b5133 0.0s
+ => => exporting attestation manifest sha256:86f609b2d40dd18ad5014f9723d44a481b9d952ed93dc937d16c4bcbe81d3fb9 0.0s
+ => => exporting manifest list sha256:bdd5463c161d0b9d8f2b702d16550eccb9765c5016acccd5575990475e2e2033 0.0s
+ => => naming to docker.io/library/custom-nginx:latest 0.0s
+ => => unpacking to docker.io/library/custom-nginx:latest
 
 # 빌드된 이미지 확인
 $ docker images
+IMAGE                 ID             DISK USAGE   CONTENT SIZE   EXTRA
+alpine:latest         25109184c71b       13.6MB         4.28MB    U
+custom-nginx:latest   bdd5463c161d       91.8MB         25.8MB    U
 
 # Docker 컨테이너 실행(background, name, port 옵션 추가)
 $ docker run -d --name custom-nginx -p 8080:80 custom-nginx
@@ -282,7 +304,6 @@ $ curl http://localhost:8080
   </head>
   <body></body>
 </html>
-# 추후 기입
 ```
 
 ---
@@ -290,7 +311,7 @@ $ curl http://localhost:8080
 ## 9. 포트 매핑
 
 ```zsh
-# 추후 기입
+# 컨테이너 생성 및 포트매핑
 $ docker run -d --name nginx-test -p 3000:80 nginx:alpine
 
 $ curl http://localhost:3000
@@ -317,7 +338,37 @@ font-family: Tahoma, Verdana, Arial, sans-serif; }
 ## 10. 바인드 마운트 (호스트 변경 전/후 비교)
 
 ```zsh
-# 추후 기입
+# 바인드 마운트
+$ docker run -d --name nginx-mount-test --mount type=bind,source=/Users/jun/Documents/GitHub/codyssey-work/workstation/binddir,target=/usr/share/nginx/html nginx:alpine
+ec40bdf3b2bdd54e6dadd364d8b0e7f0c87f5ca6687bce143493f724050f8122
+
+# 바인드 마운트 확인
+$ docker inspect nginx-mount-test
+            ...
+            "Mounts": [
+                {
+                    "Type": "bind",
+                    "Source": "/Users/jun/Documents/GitHub/codyssey-work/workstation/binddir",
+                    "Target": "/usr/share/nginx/html"
+                }
+            ],
+            ...
+
+# 호스트 파일 변경 전 컨테이너 내부 html 파일 확인
+$ docker exec -it nginx-mount-test ls -al /usr/share/nginx/html
+drwxr-xr-x    3 root     root            96 Apr  3 03:28 .
+drwxr-xr-x    3 root     root          4096 Mar 24 22:11 ..
+-rw-r--r--    1 root     root             0 Apr  3 03:28 test.txt
+
+# 호스트 파일 변경 작업(test2.txt 생성)
+$ touch test2.txt
+
+# 호스트 파일 변경 후 컨테이너 내부 html 파일 확인
+$ docker exec -it nginx-mount-test ls -al /usr/share/nginx/html
+drwxr-xr-x    3 root     root            96 Apr  3 03:28 .
+drwxr-xr-x    3 root     root          4096 Mar 24 22:11 ..
+-rw-r--r--    1 root     root             0 Apr  3 03:28 test.txt
+-rw-r--r--    1 root     root             0 Apr  8 03:47 test2.txt
 ```
 
 ---
@@ -433,7 +484,7 @@ git push -u origin main
 
 ## 15. 트러블슈팅
 
-### Case 1: 추후 기입
+### Case 1: alpine 컨테이너 실행 후 바로 종료
 
 | 항목      | 내용                                                                                                                                                        |
 | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -442,7 +493,7 @@ git push -u origin main
 | 확인      | docker ps -a 로 확인 → STATUS 컬럼이 Exited 로 표시됨                                                                                                       |
 | 해결      | Alpine은 실행할 프로세스(PID 1)가 없으면 즉시 종료되기 때문에 docker run -it alpine sh 또는 docker run -d alpine sleep infinity 로 프로세스를 붙잡아줘야 함 |
 
-### Case 2: 추후 기입
+### Case 2: alpine 컨테이너 bash 접속 시도
 
 | 항목      | 내용                                                                         |
 | --------- | ---------------------------------------------------------------------------- |
