@@ -108,10 +108,10 @@ $ ls -al
 
 ### 절대 경로 vs 상대 경로
 
-| 구분 | 설명 | 예시 |
-| ---- | ---- | ---- |
-| **절대 경로** | 루트(`/`)에서 시작하는 전체 경로. 어디서 실행해도 동일한 위치를 가리킴 | `/Users/jun/Documents/README.md` |
-| **상대 경로** | 현재 위치 기준으로 표현하는 경로. 현재 위치에 따라 가리키는 대상이 달라짐 | `./README.md`, `../Documents` |
+| 구분          | 설명                                                                      | 예시                             |
+| ------------- | ------------------------------------------------------------------------- | -------------------------------- |
+| **절대 경로** | 루트(`/`)에서 시작하는 전체 경로. 어디서 실행해도 동일한 위치를 가리킴    | `/Users/jun/Documents/README.md` |
+| **상대 경로** | 현재 위치 기준으로 표현하는 경로. 현재 위치에 따라 가리키는 대상이 달라짐 | `./README.md`, `../Documents`    |
 
 ```zsh
 # 현재 위치: /Users/jun/Documents/GitHub/codyssey-work/workstation
@@ -140,12 +140,12 @@ $ cd ../../..
   └── 파일 종류 (- 일반파일 / d 디렉토리 / l 심볼릭링크)
 ```
 
-| 위치 | 의미 |
-| ---- | ---- |
-| 첫 번째 글자 | 파일 종류 (`-` 일반파일, `d` 디렉토리, `l` 심볼릭링크) |
-| ① `rwx` (2~4번째) | 소유자(owner) 권한 |
-| ② `r-x` (5~7번째) | 그룹(group) 권한 |
-| ③ `r--` (8~10번째) | 기타(others) 권한 |
+| 위치               | 의미                                                   |
+| ------------------ | ------------------------------------------------------ |
+| 첫 번째 글자       | 파일 종류 (`-` 일반파일, `d` 디렉토리, `l` 심볼릭링크) |
+| ① `rwx` (2~4번째)  | 소유자(owner) 권한                                     |
+| ② `r-x` (5~7번째)  | 그룹(group) 권한                                       |
+| ③ `r--` (8~10번째) | 기타(others) 권한                                      |
 
 ```zsh
 # 변경 전
@@ -353,11 +353,11 @@ $ curl http://localhost:8080
 컨테이너 내부 포트(예: 80)는 컨테이너 네트워크 안에서만 유효하기 때문에, 호스트(브라우저, curl 등)에서 직접 접근할 수 없다.
 포트 매핑(`-p`)으로 호스트 포트와 컨테이너 포트를 연결해야 외부에서 접근이 가능하다.
 
-| 구분 | 설명 |
-| ---- | ---- |
-| 컨테이너 내부 포트 | 컨테이너 네트워크 안에서만 유효, 외부 직접 접근 불가 |
-| 호스트 포트 | 브라우저, curl 등 외부에서 접근 가능한 포트 |
-| 포트 매핑 (`-p 3000:80`) | 호스트 3000번 → 컨테이너 80번으로 트래픽 전달 |
+| 구분                     | 설명                                                 |
+| ------------------------ | ---------------------------------------------------- |
+| 컨테이너 내부 포트       | 컨테이너 네트워크 안에서만 유효, 외부 직접 접근 불가 |
+| 호스트 포트              | 브라우저, curl 등 외부에서 접근 가능한 포트          |
+| 포트 매핑 (`-p 3000:80`) | 호스트 3000번 → 컨테이너 80번으로 트래픽 전달        |
 
 ```zsh
 # 컨테이너 생성 및 포트매핑
@@ -550,3 +550,31 @@ git push -u origin main
 | 원인 가설 | alpine 이미지에는 bash가 설치되어 있지 않음                                  |
 | 확인      | alpine은 용량을 최소화한 경량 이미지라 bash 대신 sh만 기본                   |
 | 해결      | docker exec -it [컨테이너] sh 로 접속                                        |
+
+#### Dodcker hello-world
+
+```zsh
+Digest: sha256:452a468a4bf985040037cb6d5392410206e47db9bf5b7278d281f94d1c2d0931
+Status: Downloaded newer image for hello-world:latest
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (arm64v8)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+```
