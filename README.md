@@ -578,3 +578,12 @@ Share images, automate workflows, and more with a free Docker ID:
 For more examples and ideas, visit:
  https://docs.docker.com/get-started/
 ```
+
+---
+
+#### 평가로 알게 된 정보
+
+1. 현재 디렉토리 권한 기준에서 새로운 디렉토리 혹은 파일을 만들고 권한을 000 이런식으로 변경 후 해당 파일을 삭제 가능한지 불가능 한지 알게됨
+   => 가능하다, 현재 디렉토리 기준의 오너의 권한에 따라 삭제가 가능하다.
+2. 권한의 종류 중 7777 이런식으로 더 추가된 권한 변경이 가능하다. (Special Bits 검색)
+3. 절대경로 상대경로의 차이에서 ~/.. 로 시작되는거도 상대경로이다. 절대경로의 경우 /로 시작되는걸 의미한다.
